@@ -1,67 +1,64 @@
-# Crypto Analysis
+# Crypto Market Data Cleaning & Analysis
 
-Crypto Analysis is a simple and practical tool for tracking cryptocurrency prices, visualizing trends, and performing basic market analysis. It fetches real-time data from popular crypto APIs and helps you understand market movements through charts and indicators.
+This is a notebook-based analysis of historical Bitcoin market data. It uses a CSV dataset and pandas to clean timestamps and duplicate rows, calculate daily returns, a 7-day moving average and rolling volatility, and plot the price and return series.
 
-## Features
+> **Scope:** The checked-in work is a historical-data notebook. It does not currently implement a real-time API client, multi-coin dashboard, CLI, alerts, or portfolio tracking. The source of the CSV dataset should be documented before presenting numeric findings; the notebook still contains a source placeholder.
 
-- Real-time cryptocurrency price tracking
-- Historical price charts using Matplotlib/Plotly
-- Technical indicators (MA, EMA, RSI etc.)
-- Comparison of multiple coins
-- Export analysis reports
-- CLI or GUI mode (optional)
+## Repository layout
 
-## Tech Stack
+```text
+crypto-analysis/
+├── README.md
+└── Crypto-Data-minor-project-main/
+    └── Crypto-Data-minor-project-main/
+        ├── README.md
+        ├── crypto_data.csv
+        └── crypto_data_cleaning.ipynb
+```
 
-- Python 3.x
-- Requests / WebSockets (for API data)
-- Pandas / NumPy (data processing)
-- Matplotlib or Plotly (visualization)
+## Analysis steps
 
-## Installation
+1. Load the CSV file with pandas.
+2. Inspect data types, missing values and duplicate rows.
+3. Parse `snapped_at` as a datetime index and remove duplicate timestamps/rows.
+4. Forward-fill missing values, as currently implemented in the notebook.
+5. Calculate percentage daily returns, a 7-observation moving average and rolling standard deviation of returns.
+6. Plot price with the moving average and visualize daily returns.
 
-Clone the repository:
+The moving average and volatility windows are measured in rows/observations. If the source data has missing dates or irregular sampling, validate the time intervals before interpreting them as calendar-day metrics.
+
+## Run locally
+
+Requirements: Python 3.10+.
 
 ```bash
-git clone https://github.com/your-username/crypto-analysis.git
-cd crypto-analysis
-Install dependencies:
+python -m venv .venv
+```
 
-bash
-Copy code
-pip install -r requirements.txt
-Usage
-Run the tool:
+Activate the environment:
 
-bash
-Copy code
-python main.py
-Example:
+```bash
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
 
-bash
-Copy code
-python main.py --coin bitcoin --days 30
-This will fetch the last 30 days' price history for Bitcoin and show the trend graph.
+# macOS/Linux
+source .venv/bin/activate
+```
 
-Project Structure
-css
-Copy code
-.
-├── main.py
-├── analysis/
-│   ├── indicators.py
-│   ├── charts.py
-├── data/
-├── requirements.txt
-└── README.md
-Future Enhancements
-AI-based price prediction
+Install notebook dependencies and open the notebook from its data directory:
 
-Portfolio tracking
+```bash
+python -m pip install pandas numpy matplotlib requests notebook
+cd Crypto-Data-minor-project-main/Crypto-Data-minor-project-main
+jupyter notebook crypto_data_cleaning.ipynb
+```
 
-Alerts for price drops/rise
+Run the cells from top to bottom. The notebook expects `crypto_data.csv` in the same working directory.
 
-Dashboard with live updates
+## Before using this as an analysis portfolio
 
-Contributions
-Contributions are welcome. Open an issue or create a pull request to discuss improvements.
+- Add the real dataset source URL and license in this README.
+- Report row counts, date coverage, missing-value counts and duplicates before/after cleaning.
+- Avoid filling all missing values forward without checking what caused the gaps.
+- State the actual date frequency and explain how return/volatility values are calculated.
+- Do not frame the charts as investment advice or predictive signals.
